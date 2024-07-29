@@ -53,7 +53,7 @@ function App() {
       setStatusColor("green");
     } else {
       setStatusMessage(`${correctCount} is correctly placed from 81.`);
-      setStatusColor("blue");
+      setStatusColor("#1c85fd");
     }
   };
 
