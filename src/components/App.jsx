@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SudokuGrid from "./SudokuGrid";
-import "./App.css";
+import "../App.css";
 import sudoku from "sudoku";
 
 function App() {
@@ -18,17 +18,21 @@ function App() {
   const generateNewPuzzle = () => {
     const rawPuzzle = sudoku.makepuzzle();
     const solvedPuzzle = sudoku.solvepuzzle(rawPuzzle);
+    setStatusMessage("");
 
     setPuzzle(rawPuzzle);
     setSolution(solvedPuzzle);
+    
   };
 
   const handleInputChange = (row, col, value) => {
     setUserInput({ ...userInput, [`${row}-${col}`]: value });
+    //console.log([`${row}-${col}`]);
   };
 
   const handleCellClick = (row, col) => {
     setSelectedCell(`${row}-${col}`);
+    //console.log(selectedCell);
   };
 
   const checkSolution = () => {
@@ -65,9 +69,9 @@ function App() {
           <SudokuGrid
             puzzle={puzzle}
             userInput={userInput}
+            onCellClick={handleCellClick}
             selectedCell={selectedCell}
             onInputChange={handleInputChange}
-            onCellClick={handleCellClick}
           />
           <div className="controls">
             <button onClick={checkSolution}>Check</button>
