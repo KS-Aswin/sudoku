@@ -19,20 +19,18 @@ function App() {
     const rawPuzzle = sudoku.makepuzzle();
     const solvedPuzzle = sudoku.solvepuzzle(rawPuzzle);
     setStatusMessage("");
-
+    setSelectedCell(null);
+    setUserInput({});
     setPuzzle(rawPuzzle);
     setSolution(solvedPuzzle);
-    
-  };
-
-  const handleInputChange = (row, col, value) => {
-    setUserInput({ ...userInput, [`${row}-${col}`]: value });
-    //console.log([`${row}-${col}`]);
   };
 
   const handleCellClick = (row, col) => {
     setSelectedCell(`${row}-${col}`);
-    //console.log(selectedCell);
+  };
+
+  const handleInputChange = (row, col, value) => {
+    setUserInput({ ...userInput, [`${row}-${col}`]: value });
   };
 
   const checkSolution = () => {
@@ -60,24 +58,25 @@ function App() {
       setStatusColor("#1c85fd");
     }
   };
-
   return (
     <>
       <div className="">
         <div className="App">
           <h1>Sudoku</h1>
           <SudokuGrid
-            puzzle={puzzle}
-            userInput={userInput}
             onCellClick={handleCellClick}
             selectedCell={selectedCell}
+            puzzle={puzzle}
+            userInput={userInput}
             onInputChange={handleInputChange}
           />
           <div className="controls">
             <button onClick={checkSolution}>Check</button>
             <button onClick={generateNewPuzzle}>Reset</button>
           </div>
-          <div className="status" style={{ color: statusColor }}>{statusMessage}</div>
+          <div className="status" style={{ color: statusColor }}>
+            {statusMessage}
+          </div>
         </div>
       </div>
     </>
