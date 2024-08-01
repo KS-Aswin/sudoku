@@ -18,14 +18,14 @@ function SudokuGrid({
       {Array.from({ length: 9 }, (_, row) => (
         <div key={row} className="row">
           {Array.from({ length: 9 }, (_, col) => {
+
             const index = row * 9 + col;
             const key = `${row}-${col}`;
-            
             const isDefault = puzzle[index] !== null;
             const value = isDefault ? puzzle[index] + 1 : userInput[key] || "";
             const isSelected = selectedCell === key;
-            let className = "cell";
 
+            let className = "cell";
             if (isDefault) {
               className += " default-cell";
               if (isSelected) {

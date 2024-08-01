@@ -43,9 +43,9 @@ function App() {
       const userValue = parseInt(userInput[key], 10);
       const solutionValue = solution[index] + 1;
 
-      if (cell !== null || userValue === solutionValue) {
+      if ((cell !== null && cell + 1 === solutionValue) || userValue === solutionValue) {
         correctCount++;
-      }
+    }
     });
 
     const remainingCells = 81 - correctCount;
