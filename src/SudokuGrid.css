@@ -26,7 +26,7 @@
 
 .default-cell {
   background-color: #e2ebf4;
-  color: #1c85fd;
+  color: #39495a;
 }
 
 .selected-cell {
@@ -40,5 +40,5 @@
 
 
 input:read-only {
-  background-color: #97cbff;
+  background-color: #e2ebf4;
 }
