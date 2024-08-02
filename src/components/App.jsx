@@ -35,6 +35,7 @@ function App() {
 
   const checkSolution = () => {
     let correctCount = 0;
+    let remainings = 0;
 
     puzzle.forEach((cell, index) => {
       const row = Math.floor(index / 9);
@@ -43,18 +44,27 @@ function App() {
       const userValue = parseInt(userInput[key], 10);
       const solutionValue = solution[index] + 1;
 
-      if ((cell !== null && cell + 1 === solutionValue) || userValue === solutionValue) {
+      if (
+        (cell !== null && cell + 1 === solutionValue) ||
+        userValue === solutionValue
+      ) {
+        remainings++;
+      }
+
+      if (userValue === solutionValue) {
         correctCount++;
-    }
+      }
     });
 
-    const remainingCells = 81 - correctCount;
+    const remainingCells = 81 - remainings;
 
     if (remainingCells === 0) {
       setStatusMessage("Congratulations! You have completed the puzzle.");
       setStatusColor("green");
     } else {
-      setStatusMessage(`${correctCount} is correctly placed from 81.`);
+      setStatusMessage(
+        `${remainings} is Cells are OK, still ${remainingCells} Cells to go!`
+      );
       setStatusColor("#1c85fd");
     }
   };
