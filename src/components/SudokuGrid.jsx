@@ -6,6 +6,8 @@ function SudokuGrid({
   userInput,
   selectedCell,
   onInputChange,
+  incorrectCells = {},
+  correctCells = {}, 
 }) {
   const handleInputChange = (row, col, value) => {
     if (/^[1-9]?$/.test(value)) {
@@ -18,24 +20,26 @@ function SudokuGrid({
       {Array.from({ length: 9 }, (_, row) => (
         <div key={row} className="row">
           {Array.from({ length: 9 }, (_, col) => {
-
             const index = row * 9 + col;
             const key = `${row}-${col}`;
             const isDefault = puzzle[index] !== null;
             const value = isDefault ? puzzle[index] + 1 : userInput[key] || "";
             const isSelected = selectedCell === key;
+            const isIncorrect = incorrectCells[key]; 
+            const isCorrect = correctCells[key]; 
 
             let className = "cell";
             if (isDefault) {
               className += " default-cell";
-              if (isSelected) {
-                className += " selected-cell";
-              }
             } else {
               if (isSelected) {
-                className += " empty-selected";
+                className += " selected-cell";
+              } else if (isIncorrect) {
+                className += " incorrect-cell";
+              } else if (isCorrect) {
+                className += " correct-cell";
               }
-              if (userInput[key]) {
+              if (userInput[key] && !isIncorrect && !isCorrect && !isSelected) {
                 className += " user-input";
               }
             }
