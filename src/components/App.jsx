@@ -10,7 +10,8 @@ function App() {
   const [selectedCell, setSelectedCell] = useState(null);
   const [statusMessage, setStatusMessage] = useState("");
   const [statusColor, setStatusColor] = useState("black");
-
+  const [incorrectCells, setIncorrectCells] = useState({});
+  const [correctCells, setCorrectCells] = useState({}); 
   useEffect(() => {
     generateNewPuzzle();
   }, []);
@@ -23,6 +24,8 @@ function App() {
     setUserInput({});
     setPuzzle(rawPuzzle);
     setSolution(solvedPuzzle);
+    setIncorrectCells({});
+    setCorrectCells({});
   };
 
   const handleCellClick = (row, col) => {
@@ -34,8 +37,11 @@ function App() {
   };
 
   const checkSolution = () => {
+    const newIncorrectCells = {};
+    const newCorrectCells = {}; 
     let correctCount = 0;
     let remainings = 0;
+    let incorrect=0;
 
     puzzle.forEach((cell, index) => {
       const row = Math.floor(index / 9);
@@ -44,17 +50,24 @@ function App() {
       const userValue = parseInt(userInput[key], 10);
       const solutionValue = solution[index] + 1;
 
+      if (userValue === solutionValue) {
+        newCorrectCells[key] = true; 
+        correctCount++;
+      } else if (userValue !== solutionValue && !isNaN(userValue)) {
+        newIncorrectCells[key] = true;
+        incorrect++;
+      }
+
       if (
         (cell !== null && cell + 1 === solutionValue) ||
         userValue === solutionValue
       ) {
         remainings++;
       }
-
-      if (userValue === solutionValue) {
-        correctCount++;
-      }
     });
+
+    setIncorrectCells(newIncorrectCells);
+    setCorrectCells(newCorrectCells);
 
     const remainingCells = 81 - remainings;
 
@@ -63,22 +76,26 @@ function App() {
       setStatusColor("green");
     } else {
       setStatusMessage(
-        `${remainings} is Cells are OK, still ${remainingCells} Cells to go!`
+        `${remainings} Cell are OK and ${incorrect} Cell are Incorrect, still ${remainingCells} Cell to go!`
       );
       setStatusColor("#1c85fd");
+      setSelectedCell(null);
     }
   };
+
   return (
     <>
       <div className="">
         <div className="App">
-          <h1>Sudoku</h1>
+          <h1>SUDOKU</h1>
           <SudokuGrid
             onCellClick={handleCellClick}
             selectedCell={selectedCell}
             puzzle={puzzle}
             userInput={userInput}
             onInputChange={handleInputChange}
+            incorrectCells={incorrectCells} 
+            correctCells={correctCells} 
           />
           <div className="controls">
             <button onClick={checkSolution}>Check</button>
