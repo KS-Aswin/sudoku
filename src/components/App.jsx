@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SudokuGrid from "./SudokuGrid";
 import "../App.css";
 import sudoku from "sudoku";
+import Swal from "sweetalert2";
 
 function App() {
   const [puzzle, setPuzzle] = useState([]);
@@ -11,7 +12,7 @@ function App() {
   const [statusMessage, setStatusMessage] = useState("");
   const [statusColor, setStatusColor] = useState("black");
   const [incorrectCells, setIncorrectCells] = useState({});
-  const [correctCells, setCorrectCells] = useState({}); 
+  const [correctCells, setCorrectCells] = useState({});
   useEffect(() => {
     generateNewPuzzle();
   }, []);
@@ -38,10 +39,10 @@ function App() {
 
   const checkSolution = () => {
     const newIncorrectCells = {};
-    const newCorrectCells = {}; 
+    const newCorrectCells = {};
     let correctCount = 0;
     let remainings = 0;
-    let incorrect=0;
+    let incorrect = 0;
 
     puzzle.forEach((cell, index) => {
       const row = Math.floor(index / 9);
@@ -51,7 +52,7 @@ function App() {
       const solutionValue = solution[index] + 1;
 
       if (userValue === solutionValue) {
-        newCorrectCells[key] = true; 
+        newCorrectCells[key] = true;
         correctCount++;
       } else if (userValue !== solutionValue && !isNaN(userValue)) {
         newIncorrectCells[key] = true;
@@ -72,7 +73,12 @@ function App() {
     const remainingCells = 81 - remainings;
 
     if (remainingCells === 0) {
-      setStatusMessage("Congratulations! You have completed the puzzle.");
+      setStatusMessage("");
+      Swal.fire({
+        title: "Congratulations!",
+        text: "You have completed the puzzle.",
+        icon: "success",
+      });
       setStatusColor("green");
     } else {
       setStatusMessage(
@@ -94,8 +100,8 @@ function App() {
             puzzle={puzzle}
             userInput={userInput}
             onInputChange={handleInputChange}
-            incorrectCells={incorrectCells} 
-            correctCells={correctCells} 
+            incorrectCells={incorrectCells}
+            correctCells={correctCells}
           />
           <div className="controls">
             <button onClick={checkSolution}>Check</button>
